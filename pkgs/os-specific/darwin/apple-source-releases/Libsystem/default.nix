@@ -18,7 +18,8 @@ let
       mkdir -p $out/src/OpenDirectory
 
       cd $out
-      tar -xzf $downloadedFile --strip-components=1
+      # NOTE: `fetchzip` moves the downloaded file from `$downloadedFile` to `$renamed` before running the supplied `postFetch` step
+      tar -xzf $renamed --strip-components=1 
       rm -r $out/src/libm
 
       # If `src/opendirectory` and `src/OpenDirectory` refer to different
