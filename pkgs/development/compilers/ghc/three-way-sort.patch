@@ -36,14 +36,14 @@ index 2ae034a99c3..f2b89425104 100644
 --- a/libraries/base/Data/OldList.hs
 +++ b/libraries/base/Data/OldList.hs
 @@ -1331,37 +1331,98 @@ and possibly to bear similarities to a 1982 paper by Richard O'Keefe:
- 
+
  Benchmarks show it to be often 2x the speed of the previous implementation.
  Fixes ticket https://gitlab.haskell.org/ghc/ghc/issues/2143
 +
 +Further improved using a four-way merge, with an additional performance increase of ~20%
 +https://gitlab.haskell.org/ghc/ghc/issues/24280
  -}
- 
+
 -sort = sortBy compare
 -sortBy cmp = mergeAll . sequences
 +{-# INLINEABLE sort #-} -- allows specialization for the ord instance
@@ -67,13 +67,13 @@ index 2ae034a99c3..f2b89425104 100644
 +      | a `gt` b  = descending b [a]  xs
 +      | otherwise = ascending  b (a:) xs
      sequences xs = [xs]
- 
+
      descending a as (b:bs)
 -      | a `cmp` b == GT = descending b (a:as) bs
 -    descending a as bs  = (a:as): sequences bs
 +      | a `gt` b       = descending b (a:as) bs
 +    descending a as bs = (a:as): sequences bs
- 
+
      ascending a as (b:bs)
 -      | a `cmp` b /= GT = ascending b (\ys -> as (a:ys)) bs
 -    ascending a as bs   = let !x = as [a]
@@ -100,7 +100,7 @@ index 2ae034a99c3..f2b89425104 100644
 +    reduce_once [a,b,c,d,e,f] = [merge3 a b c, merge3 d e f]
 +    reduce_once (a:b:c:d:xs)  = let !x = merge4 a b c d
 +                                in x : reduce_once xs
- 
+
      merge as@(a:as') bs@(b:bs')
 -      | a `cmp` b == GT = b:merge as  bs'
 -      | otherwise       = a:merge as' bs
@@ -151,7 +151,7 @@ index 2ae034a99c3..f2b89425104 100644
 +    merge4XY x as bs y cs ds
 +      | x `gt` y  = y : merge4X x as bs   cs ds
 +      | otherwise = x : merge4Y   as bs y cs ds
- 
+
  {-
  sortBy cmp l = mergesort cmp l
 diff --git a/testsuite/tests/lib/base/Sort.hs b/testsuite/tests/lib/base/Sort.hs
@@ -189,15 +189,4 @@ index 00000000000..cca68ed0cf2
 +[0,1,2,3,4,5,6,7,8,9,10]
 +[Arg 0 0,Arg 0 1,Arg 0 2,Arg 1 0,Arg 1 1]
 +[Arg 0 0,Arg 0 1,Arg 0 2]
-diff --git a/testsuite/tests/lib/base/all.T b/testsuite/tests/lib/base/all.T
-index bd8d7dc4868..aea89f40a70 100644
---- a/testsuite/tests/lib/base/all.T
-+++ b/testsuite/tests/lib/base/all.T
-@@ -8,3 +8,4 @@ test('executablePath', [extra_run_opts(config.os), js_broken(22261)], compile_an
- test('T17472', normal, compile_and_run, [''])
- test('T19569b', normal, compile_and_run, [''])
- test('Monoid_ByteArray', normal, compile_and_run, [''])
-+test('Sort', normal, compile_and_run, [''])
--- 
-GitLab
 
