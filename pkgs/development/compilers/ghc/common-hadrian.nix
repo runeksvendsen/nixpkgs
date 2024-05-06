@@ -275,6 +275,7 @@ stdenv.mkDerivation ({
       then ./docs-sphinx-7-ghc98.patch
       else ./docs-sphinx-7.patch )
     ./three-way-sort.patch
+    ./bump-ghc-965-version.patch
   ] ++ lib.optionals (stdenv.targetPlatform.isDarwin && stdenv.targetPlatform.isAarch64) [
     # Prevent the paths module from emitting symbols that we don't use
     # when building with separate outputs.

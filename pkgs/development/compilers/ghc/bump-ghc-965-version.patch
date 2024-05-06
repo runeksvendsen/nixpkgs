@@ -1,0 +1,25 @@
+From 0a73cb1f78302aa327dd44a56b29d6ba07547637 Mon Sep 17 00:00:00 2001
+From: Julian Ospald <hasufell@posteo.de>
+Date: Thu, 2 May 2024 22:03:37 +0800
+Subject: [PATCH] Bump version to 9.6.5.20240502
+
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 41f9e9b7473..2e377eb779b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -13,7 +13,7 @@ dnl
+ # see what flags are available. (Better yet, read the documentation!)
+ #
+ 
+-AC_INIT([The Glorious Glasgow Haskell Compilation System], [9.6.5], [glasgow-haskell-bugs@haskell.org], [ghc-AC_PACKAGE_VERSION])
++AC_INIT([The Glorious Glasgow Haskell Compilation System], [9.6.5.20240502], [glasgow-haskell-bugs@haskell.org], [ghc-AC_PACKAGE_VERSION])
+     # Version on master must be X.Y (not X.Y.Z) for ProjectVersionMunged variable
+     # to be useful (cf #19058). However, the version must have three components
+     # (X.Y.Z) on stable branches (e.g. ghc-9.2) to ensure that pre-releases are
+-- 
+GitLab
+
